@@ -1,0 +1,30 @@
+import requests
+from flask import Flask,render_template,request,redirect,url_for,session
+
+app = Flask(__name__)
+
+@app.route('/')
+def idk():
+    return render_template('weather.html')
+
+@app.route('/',methods=['GET','POST'])
+def city():
+    if request.method == 'POST':
+        city = request.form.getlist('variable')
+        url = "http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid=d9f9f0d5aeca82c660ea97de6c2c4036"
+        r = requests.get(url.format(city[0])).json()    
+        conditions = {
+            'city':str(city),
+            'temperature':r['main']['temp'],
+            'description':r['weather'][0]['description'],
+            'icon':r['weather'][0]['icon']
+        }
+        submission_successful = True
+        return render_template('weather.html',conditions=conditions,submission_successful=submission_successful)
+        
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+    
