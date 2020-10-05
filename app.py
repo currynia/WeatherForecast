@@ -13,15 +13,19 @@ def city():
         city = request.form.getlist('variable')
         url = "http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid=d9f9f0d5aeca82c660ea97de6c2c4036"
         r = requests.get(url.format(city[0])).json()    
-        conditions = {
-            'city':str(city),
-            'temperature':r['main']['temp'],
-            'description':r['weather'][0]['description'],
-            'icon':r['weather'][0]['icon']
-        }
-        submission_successful = True
-        return render_template('weather.html',conditions=conditions,submission_successful=submission_successful)
-        
+        try:
+            conditions = {
+                'city':city[0],
+                'temperature':r['main']['temp'],
+                'description':r['weather'][0]['description'],
+                'icon':r['weather'][0]['icon']
+            }
+            submission_successful = True
+            icon_link = 'http://openweathermap.org/img/wn/{}@2x.png'
+            icon = icon_link.format(conditions.get("icon"))
+            return render_template('weather.html',conditions=conditions,submission_successful=submission_successful,icon=icon)
+        except:
+            return render_template('weather.html')
 
 
 if __name__ == "__main__":
