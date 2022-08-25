@@ -11,7 +11,7 @@ def idk():
 def city():
     if request.method == 'POST':
         city = request.form.getlist('variable')
-        url = "http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid=d9f9f0d5aeca82c660ea97de6c2c4036"
+        url = "INSERT API"
         r = requests.get(url.format(city[0])).json()    
         try:
             conditions = {
